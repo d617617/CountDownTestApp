@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TestApp.Views.MainPage"
+              xmlns:testapp="clr-namespace:TestApp" 
+             xmlns:viewmodels="clr-namespace:TestApp.ViewModels"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <viewmodels:TimeToProgressConveter x:Key="progressConveter"></viewmodels:TimeToProgressConveter>
+        <viewmodels:SecondsToMinConverter x:Key="minConverter"></viewmodels:SecondsToMinConverter>
+    </ContentPage.Resources>
+    <StackLayout>
+        <AbsoluteLayout VerticalOptions="FillAndExpand">
+            <StackLayout x:Name="npkWrapper" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="SizeProportional">
+                <testapp:NumberPicker2 CurrentItem="{Binding CurrentItem,Mode=TwoWay}"
+                               FontSize="50" HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               HeightRequest="150"
+                               ></testapp:NumberPicker2>
+            </StackLayout>
+            <StackLayout x:Name="circleWrapper"  AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="False" AbsoluteLayout.LayoutFlags="SizeProportional">
+                <testapp:CircleCountdown Progress="{Binding Times,Converter={StaticResource progressConveter}}" 
+                                         WidthRequest="300" HeightRequest="300" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"></testapp:CircleCountdown>
+            </StackLayout>
+            <StackLayout x:Name="minlblWrapper"  AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="False" AbsoluteLayout.LayoutFlags="SizeProportional">
+                <Label HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                       FontSize="Large"
+                       Text="{Binding Times,Converter={StaticResource minConverter}}" ></Label>
+            </StackLayout>
+        </AbsoluteLayout>
+        <Button Text="开始倒计时" Command="{Binding CountdownCommand}" Clicked="Button_Clicked"></Button>
+    </StackLayout>
+
+
+
+</ContentPage>
