@@ -6,30 +6,51 @@
              xmlns:viewmodels="clr-namespace:TestApp.ViewModels"
              Title="{Binding Title}">
     <ContentPage.Resources>
+        <viewmodels:StateToIsVisibleConverter x:Key="visibleConverter"></viewmodels:StateToIsVisibleConverter>
         <viewmodels:TimeToProgressConveter x:Key="progressConveter"></viewmodels:TimeToProgressConveter>
         <viewmodels:SecondsToMinConverter x:Key="minConverter"></viewmodels:SecondsToMinConverter>
     </ContentPage.Resources>
     <StackLayout>
         <AbsoluteLayout VerticalOptions="FillAndExpand">
-            <StackLayout x:Name="npkWrapper" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="SizeProportional">
+            <!--别忘记ConverterParameter-->
+            <StackLayout x:Name="npkWrapper" 
+                         IsVisible="{Binding ModelState,Converter={StaticResource visibleConverter},ConverterParameter='npk'}" 
+                         AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="SizeProportional">
                 <testapp:NumberPicker2 CurrentItem="{Binding CurrentItem,Mode=TwoWay}"
                                FontSize="50" HorizontalOptions="CenterAndExpand"
                                VerticalOptions="CenterAndExpand"
                                HeightRequest="150"
+                               x:Name="npk"
                                ></testapp:NumberPicker2>
             </StackLayout>
-            <StackLayout x:Name="circleWrapper"  AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="False" AbsoluteLayout.LayoutFlags="SizeProportional">
-                <testapp:CircleCountdown Progress="{Binding Times,Converter={StaticResource progressConveter}}" 
+            <StackLayout x:Name="circleWrapper"  AbsoluteLayout.LayoutBounds="0,0,1,1" 
+                         IsVisible="{Binding ModelState,Converter={StaticResource visibleConverter},ConverterParameter='cp'}" 
+                         AbsoluteLayout.LayoutFlags="SizeProportional">
+                <testapp:CircleCountdown Progress="{Binding Times,Converter={StaticResource progressConveter},ConverterParameter={ Reference npk} }" 
                                          WidthRequest="300" HeightRequest="300" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"></testapp:CircleCountdown>
             </StackLayout>
-            <StackLayout x:Name="minlblWrapper"  AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="False" AbsoluteLayout.LayoutFlags="SizeProportional">
+            <StackLayout x:Name="minlblWrapper"   AbsoluteLayout.LayoutBounds="0,0,1,1" 
+                         IsVisible="{Binding ModelState,Converter={StaticResource visibleConverter},ConverterParameter='lbl'}" 
+                         AbsoluteLayout.LayoutFlags="SizeProportional">
                 <Label HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
                        FontSize="Large"
                        Text="{Binding Times,Converter={StaticResource minConverter}}" ></Label>
             </StackLayout>
         </AbsoluteLayout>
-        <Button Text="开始倒计时" Command="{Binding CountdownCommand}" Clicked="Button_Clicked"></Button>
+        <Button Command="{Binding CountdownCommand}" >
+            <Button.Triggers>
+                <DataTrigger TargetType="Button" Value="{Static viewmodels:ModelState.Picker}" Binding="{Binding ModelState}">
+                    <Setter Property="Text" Value="开始倒计时"></Setter>
+                </DataTrigger>
+                <DataTrigger TargetType="Button" Value="{Static viewmodels:ModelState.CountDown}" Binding="{Binding ModelState}">
+                    <Setter Property="Text" Value="取消倒计时"></Setter>
+                </DataTrigger>
+                <DataTrigger TargetType="Button" Value="{Static viewmodels:ModelState.CountDownOver}" Binding="{Binding ModelState}">
+                    <Setter Property="Text" Value="重新选择"></Setter>
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>
     </StackLayout>
 
 
