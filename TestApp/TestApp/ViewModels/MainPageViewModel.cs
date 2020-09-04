@@ -17,7 +17,7 @@ namespace TestApp.ViewModels
             : base(navigationService)
         {
             Title = "Main Page";
-            CurrentItem = "3";
+            //CurrentItem = "10";
             CountdownCommand = new DelegateCommand(CountdownCommandExcute);
             _modelState = ModelState.Picker;//默认为数字选择状态
         }
@@ -235,8 +235,12 @@ namespace TestApp.ViewModels
             {
                 npk = parameter as NumberPicker2;
             }
-            int nowSeconds = (int)value;//获取当前秒          
-            double allSeconds = double.Parse(npk.CurrentItem) * 60;
+            int nowSeconds = (int)value;//获取当前秒    
+            double allSeconds = 0;
+            if (!string.IsNullOrWhiteSpace(npk.CurrentItem))
+            {
+                allSeconds = double.Parse(npk.CurrentItem) * 60;
+            }
             double progress = (allSeconds - nowSeconds) / allSeconds;
             return progress;
         }

@@ -15,7 +15,14 @@ namespace TestApp
         public Color UnSelectedTextColor { get; set; } = Color.Blue;
 
 
-        public double FontSize { get; set; } = 40;
+        public static readonly BindableProperty FontSizeProperty =
+     BindableProperty.Create(nameof(FontSize), typeof(double), typeof(NumberPicker2), 30d);
+
+        public double FontSize
+        {
+            get => (double)GetValue(FontSizeProperty);
+            set => SetValue(FontSizeProperty, value);
+        }
 
 
 
@@ -44,7 +51,7 @@ namespace TestApp
             {
                 SetValue(CurrentItemProperty, value);
             }
-        } 
+        }
         #endregion
 
 
@@ -78,6 +85,15 @@ namespace TestApp
                 return;
             }
             CurrentItem = newItem;
+        }
+
+        protected override SizeRequest OnMeasure(double widthConstraint, double heightConstraint)
+        {
+
+            var sizeRequest = base.OnMeasure(widthConstraint, heightConstraint);
+            var size = sizeRequest.Request;
+            size.Height = this.FontSize * 3;
+            return new SizeRequest(size);
         }
     }
 }

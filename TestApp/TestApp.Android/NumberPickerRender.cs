@@ -111,28 +111,28 @@ namespace TestApp.Droid
 
     class DaysAdapter : Java.Lang.Object, IWheelAdapter
     {
-        public int MaxIndex => 179;
+        public int MaxIndex => 19;
 
         public int MinIndex => 0;
 
-        public string TextWithMaximumLength => "180";
+        public string TextWithMaximumLength => "30";
 
         public int GetPosition(string value)
         {
-            return int.Parse(value) - 1;
+            return int.Parse(value) - 10;
         }
 
         public string GetValue(int position)
         {
             if (position == -2)
             {
-                return "179";
+                return "29";
             }
             if (position == -1)
             {
-                return "180";
+                return "30";
             }
-            return (position + 1).ToString();
+            return (position + 10).ToString();
         }
     }
 }

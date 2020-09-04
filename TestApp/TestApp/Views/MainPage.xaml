@@ -9,32 +9,66 @@
         <viewmodels:StateToIsVisibleConverter x:Key="visibleConverter"></viewmodels:StateToIsVisibleConverter>
         <viewmodels:TimeToProgressConveter x:Key="progressConveter"></viewmodels:TimeToProgressConveter>
         <viewmodels:SecondsToMinConverter x:Key="minConverter"></viewmodels:SecondsToMinConverter>
+
+        <Style x:Key="num_Picker" TargetType="testapp:NumberPicker2">
+            <Setter Property="FontSize" Value="45"></Setter>
+            <Setter Property="WidthRequest" Value="60"></Setter>
+            <Setter Property="HorizontalOptions" Value="StartAndExpand"></Setter>
+            <Setter Property="VerticalOptions" Value="FillAndExpand"></Setter>
+            <Setter Property="CurrentItem" Value="15"></Setter>
+        </Style>
+        <Style x:Key="num_minLbl" TargetType="Label">
+            <Setter Property="FontSize" Value="30"></Setter>
+            <Setter Property="Text" Value="分钟"></Setter>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"></Setter>
+            <Setter Property="HorizontalTextAlignment" Value="Start"></Setter>
+        </Style>
+        <Style x:Key="circleCount_wrapper" TargetType="StackLayout">
+            <Setter Property="AbsoluteLayout.LayoutBounds" Value="0,0,1,1"></Setter>
+            <Setter Property="AbsoluteLayout.LayoutFlags" Value="SizeProportional"></Setter>
+        </Style>
+        <Style x:Key="circleCount_circleControl" TargetType="testapp:CircleCountdown">
+            <Setter Property="HorizontalOptions" Value="FillAndExpand"></Setter>
+            <Setter Property="VerticalOptions" Value="FillAndExpand"></Setter>
+        </Style>
+        <Style x:Key="minLbl_wrapper" TargetType="StackLayout">
+            <Setter Property="AbsoluteLayout.LayoutBounds" Value="0,0,1,1"></Setter>
+            <Setter Property="AbsoluteLayout.LayoutFlags" Value="SizeProportional"></Setter>
+        </Style>
+        <Style x:Key="minLbl_text" TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"></Setter>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"></Setter>
+            <Setter Property="HorizontalTextAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalTextAlignment" Value="Center"></Setter>
+            <Setter Property="FontSize" Value="Large"></Setter>
+        </Style>
     </ContentPage.Resources>
-    <StackLayout>
-        <AbsoluteLayout VerticalOptions="FillAndExpand">
+    <StackLayout >
+        <AbsoluteLayout VerticalOptions="Start" BackgroundColor="PaleVioletRed">
             <!--别忘记ConverterParameter-->
             <StackLayout x:Name="npkWrapper" 
                          IsVisible="{Binding ModelState,Converter={StaticResource visibleConverter},ConverterParameter='npk'}" 
                          AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="SizeProportional">
-                <testapp:NumberPicker2 CurrentItem="{Binding CurrentItem,Mode=TwoWay}"
-                               FontSize="50" HorizontalOptions="CenterAndExpand"
-                               VerticalOptions="CenterAndExpand"
-                               HeightRequest="150"
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                    <testapp:NumberPicker2 CurrentItem="{Binding CurrentItem,Mode=TwoWay}"
+                               Style="{StaticResource num_Picker}"
                                x:Name="npk"
                                ></testapp:NumberPicker2>
+                    <Label Style="{StaticResource num_minLbl}"></Label>
+                </StackLayout>
             </StackLayout>
-            <StackLayout x:Name="circleWrapper"  AbsoluteLayout.LayoutBounds="0,0,1,1" 
-                         IsVisible="{Binding ModelState,Converter={StaticResource visibleConverter},ConverterParameter='cp'}" 
-                         AbsoluteLayout.LayoutFlags="SizeProportional">
+            <!--进度条-->
+            <StackLayout Style="{StaticResource circleCount_wrapper}"
+                         IsVisible="{Binding ModelState,Converter={StaticResource visibleConverter},ConverterParameter='cp'}" >
                 <testapp:CircleCountdown Progress="{Binding Times,Converter={StaticResource progressConveter},ConverterParameter={ Reference npk} }" 
-                                         WidthRequest="300" HeightRequest="300" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"></testapp:CircleCountdown>
+                                         Style="{StaticResource circleCount_circleControl}">
+                </testapp:CircleCountdown>
             </StackLayout>
-            <StackLayout x:Name="minlblWrapper"   AbsoluteLayout.LayoutBounds="0,0,1,1" 
+            <!--分钟-->
+            <StackLayout Style="{StaticResource minLbl_wrapper}" 
                          IsVisible="{Binding ModelState,Converter={StaticResource visibleConverter},ConverterParameter='lbl'}" 
-                         AbsoluteLayout.LayoutFlags="SizeProportional">
-                <Label HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
-                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                       FontSize="Large"
+                         >
+                <Label Style="{StaticResource minLbl_text}"
                        Text="{Binding Times,Converter={StaticResource minConverter}}" ></Label>
             </StackLayout>
         </AbsoluteLayout>

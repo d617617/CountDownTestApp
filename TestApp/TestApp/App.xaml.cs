@@ -5,6 +5,7 @@ using TestApp.Views;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Forms;
+using Prism.DryIoc;
 
 namespace TestApp
 {
@@ -13,6 +14,7 @@ namespace TestApp
         public App(IPlatformInitializer initializer)
             : base(initializer)
         {
+            
         }
 
         protected override async void OnInitialized()
