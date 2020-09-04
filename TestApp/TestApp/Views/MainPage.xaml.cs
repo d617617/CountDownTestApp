@@ -8,7 +8,8 @@ namespace TestApp.Views
     {
         public MainPage()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            var a = this.npk.CurrentItem;
         }
       
     }
